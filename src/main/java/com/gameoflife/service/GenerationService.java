@@ -2,13 +2,15 @@ package com.gameoflife.service;
 
 import com.gameoflife.entity.Cell;
 import com.gameoflife.entity.Generation;
+import com.gameoflife.life.GenerationStateType;
 
 public class GenerationService {
 
-    public Generation getNewGeneration(Cell[][] cells, int generationNumber) {
+    public Generation getNewGeneration(Cell[][] cells, GenerationStateType generationState, int order) {
         Generation newGeneration = new Generation();
         newGeneration.setCells(cells);
-        newGeneration.setOrder(generationNumber);
+        newGeneration.setState(generationState);
+        newGeneration.setOrder(order);
         return newGeneration;
     }
 
@@ -23,6 +25,6 @@ public class GenerationService {
                 nextGenCells[i][j] = cellService.getNextGenerationCell(cell, currentCell);
             }
         }
-        return getNewGeneration(nextGenCells, currentGeneration.getOrder() + 1);
+        return getNewGeneration(nextGenCells, GenerationStateType.AFTER_SEED,currentGeneration.getOrder() + 1);
     }
 }

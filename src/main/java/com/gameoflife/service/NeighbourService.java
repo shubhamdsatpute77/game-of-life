@@ -2,7 +2,7 @@ package com.gameoflife.service;
 
 import com.gameoflife.entity.Cell;
 
-public class SocietyService {
+public class NeighbourService {
 
     public int getAliveNeighourCount(Cell mainCell, Cell[][] allCells) {
         int aliveNeighbors = 0;

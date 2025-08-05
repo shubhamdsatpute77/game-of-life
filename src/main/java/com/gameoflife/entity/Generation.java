@@ -3,6 +3,7 @@ package com.gameoflife.entity;
 import com.gameoflife.life.GenerationStateType;
 
 public class Generation {
+    public static final int SEED_GENERATION = 0;
 
     private int order;
     private GenerationStateType state;

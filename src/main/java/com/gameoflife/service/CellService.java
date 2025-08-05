@@ -15,16 +15,12 @@ public class CellService {
     }
 
     public Cell getNextGenerationCell(Cell cell, Cell[][] allCells) {
-        Cell nextGenCell = new Cell();
-        nextGenCell.setX(cell.getX());
-        nextGenCell.setY(cell.getY());
-        nextGenCell.setLifeState(getNextGenerationCellState(cell, allCells));
-        return nextGenCell;
+        return getNewCell(cell.getX(), cell.getY(), getNextGenerationCellState(cell, allCells));
     }
 
     public LifeStateType getNextGenerationCellState(Cell cell, Cell[][] allCells) {
-        SocietyService societyService = new SocietyService();
-        int aliveNeighourCount = societyService.getAliveNeighourCount(cell, allCells);
+        NeighbourService neighbourService = new NeighbourService();
+        int aliveNeighourCount = neighbourService.getAliveNeighourCount(cell, allCells);
         for (LifeCriteriaEnum criteria : LifeCriteriaEnum.values()) {
             if (criteria.getLifeCriteria().isApplicable(aliveNeighourCount)) {
                 return criteria.getLifeStateType();

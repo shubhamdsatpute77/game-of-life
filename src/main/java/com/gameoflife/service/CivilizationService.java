@@ -3,16 +3,17 @@ package com.gameoflife.service;
 import com.gameoflife.entity.Cell;
 import com.gameoflife.entity.Civilization;
 import com.gameoflife.entity.Generation;
+import com.gameoflife.life.GenerationStateType;
+
+import static com.gameoflife.entity.Generation.SEED_GENERATION;
 
 public class CivilizationService {
-    public static final int SEED_GENERATION = 0;
 
     public Civilization createNewCivilization(Cell[][] cells, int generationCount) {
         GenerationService generationService = new GenerationService();
         Civilization civilization = new Civilization();
         Generation[] allGenerations = new Generation[generationCount];
-        Generation generation = generationService.getNewGeneration(cells, SEED_GENERATION);
-        allGenerations[SEED_GENERATION] = generation;
+        Generation generation = generationService.getNewGeneration(cells, GenerationStateType.SEED, SEED_GENERATION);
         civilization.setSeedGeneration(generation);
         civilization.setCurrentGeneration(generation);
         civilization.setAllGenerations(allGenerations);
