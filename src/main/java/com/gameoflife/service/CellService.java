@@ -27,7 +27,7 @@ public class CellService {
         int aliveNeighourCount = societyService.getAliveNeighourCount(cell, allCells);
         for (LifeCriteriaEnum criteria : LifeCriteriaEnum.values()) {
             if (criteria.getLifeCriteria().isApplicable(aliveNeighourCount)) {
-                return criteria.getLifeCriteria().getLivingState(cell, aliveNeighourCount);
+                return criteria.getLifeStateType();
             }
         }
         return cell.getLifeState();

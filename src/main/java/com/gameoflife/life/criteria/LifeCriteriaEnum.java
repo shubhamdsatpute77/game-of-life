@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum LifeCriteriaEnum {
-    LONELINESS_DEATH(new LonelinessDeath(), LifeStateType.DEAD),
-    CROWDED_DEATH(new CrowdedDeath(), LifeStateType.DEAD),
-    HAPPY_NEIGHBOUR_BIRTH(new HappyNeighbourCriteria(), LifeStateType.ALIVE);
+    DEATH_BY_LONELINESS(LifeCriteriaImpl.DEATH_BY_LONELINESS, LifeStateType.DEAD),
+    DEATH_BY_CROWDEDNESS(LifeCriteriaImpl.DEATH_BY_CROWDEDNESS, LifeStateType.DEAD),
+    RE_BIRTH(LifeCriteriaImpl.REBIRTH, LifeStateType.ALIVE);
 
     private LifeCriteria lifeCriteria;
     private LifeStateType lifeStateType;

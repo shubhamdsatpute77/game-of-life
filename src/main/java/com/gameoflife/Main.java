@@ -10,11 +10,10 @@ public class Main {
     public static void main(String[] args) {
 
         int[][] initialState = {
-                {0, 0, 0, 0, 0},
-                {0, 1, 1, 1, 0},
-                {0, 0, 1, 1, 1},
-                {0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0}
+                {0, 0, 0, 0},
+                {0, 1, 1, 0},
+                {0, 1, 1, 0},
+                {0, 0, 0, 0}
         };
 
         Cell[][] cells = new Cell[initialState.length][initialState[0].length];
