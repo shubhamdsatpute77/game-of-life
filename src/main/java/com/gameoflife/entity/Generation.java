@@ -1,13 +1,19 @@
 package com.gameoflife.entity;
 
 import com.gameoflife.life.GenerationStateType;
+import com.gameoflife.pojo.Population;
 
 public class Generation {
-    public static final int SEED_GENERATION = 0;
 
     private int order;
     private GenerationStateType state;
-    private Cell[][] cells;
+    private Population population;
+
+    public Generation(Population population, GenerationStateType state, int order) {
+        this.population = population;
+        this.state = state;
+        this.order = order;
+    }
 
     public int getOrder() {
         return order;
@@ -25,11 +31,31 @@ public class Generation {
         this.state = state;
     }
 
-    public Cell[][] getCells() {
-        return cells;
+    public Cell[][] getAllCells() {
+        return population.getCellGrid();
     }
 
-    public void setCells(Cell[][] cells) {
-        this.cells = cells;
+    public int[][] getNeighbourCountMatrix() {
+        return population.getNeighbourCountMatrix();
+    }
+
+    public int getPopulationRows() {
+        return population.getCellGrid().length;
+    }
+
+    public int getPopulationColumns(int row) {
+        return population.getCellGrid()[row].length;
+    }
+
+    public int getPopulationColumns() {
+        return population.getCellGrid()[0].length;
+    }
+
+    public Population getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Population population) {
+        this.population = population;
     }
 }

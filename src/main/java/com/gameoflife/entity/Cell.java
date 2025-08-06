@@ -1,19 +1,16 @@
 package com.gameoflife.entity;
 
 import com.gameoflife.life.LifeStateType;
+import com.gameoflife.pojo.Position;
 
 public class Cell {
 
     private LifeStateType lifeState;
-    private int x;
-    private int y;
+    private Position position;
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public Cell(LifeStateType lifeState, Position position) {
+        this.lifeState = lifeState;
+        this.position = position;
     }
 
     public LifeStateType getLifeState() {
@@ -24,12 +21,20 @@ public class Cell {
         this.lifeState = lifeState;
     }
 
-    public int getX() {
-        return x;
+    public int getPositionX() {
+        return position.getX();
     }
 
-    public int getY() {
-        return y;
+    public int getPositionY() {
+        return position.getY();
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public boolean isAlive() {
