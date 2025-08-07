@@ -1,47 +1,62 @@
 package com.gameoflife.entity;
 
-import com.gameoflife.life.LifeStateType;
-import com.gameoflife.pojo.Position;
+import com.gameoflife.life.CellStateType;
+import com.gameoflife.life.criteria.LifeCriteriaEnum;
 
 public class Cell {
 
-    private LifeStateType lifeState;
-    private Position position;
+    private CellStateType state;
+    private int x;
+    private int y;
 
-    public Cell(LifeStateType lifeState, Position position) {
-        this.lifeState = lifeState;
-        this.position = position;
+    public Cell(CellStateType state, int x, int y) {
+        this.state = state;
+        this.x = x;
+        this.y = y;
     }
 
-    public LifeStateType getLifeState() {
-        return lifeState;
+    public CellStateType getState() {
+        return state;
     }
 
-    public void setLifeState(LifeStateType lifeState) {
-        this.lifeState = lifeState;
+    public void setState(CellStateType state) {
+        this.state = state;
     }
 
-    public int getPositionX() {
-        return position.getX();
+    public int getX() {
+        return x;
     }
 
-    public int getPositionY() {
-        return position.getY();
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public Position getPosition() {
-        return position;
+    public int getY() {
+        return y;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setY(int y) {
+        this.y = y;
     }
 
     public boolean isAlive() {
-        return lifeState == LifeStateType.ALIVE;
+        return state == CellStateType.ALIVE;
     }
 
     public boolean isDead() {
-        return lifeState == LifeStateType.DEAD;
+        return state == CellStateType.DEAD;
+    }
+
+    public Cell getNextGenCell(int aliveNeighourCount) {
+        return new Cell(getNextGenCellState(aliveNeighourCount), getX(), getY());
+    }
+
+    public CellStateType getNextGenCellState(int aliveNeighourCount) {
+        for (LifeCriteriaEnum criteria : LifeCriteriaEnum.values()) {
+            if (criteria.getLifeCriteria().isApplicable(aliveNeighourCount)) {
+                return criteria.getLifeStateType();
+            }
+        }
+        return getState();
     }
 }

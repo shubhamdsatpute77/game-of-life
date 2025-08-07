@@ -1,4 +1,4 @@
-package com.gameoflife.pojo;
+package com.gameoflife.entity;
 
 public class Position {
     int x;

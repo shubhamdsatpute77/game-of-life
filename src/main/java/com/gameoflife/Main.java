@@ -1,10 +1,9 @@
 package com.gameoflife;
 
 import com.gameoflife.entity.Cell;
-import com.gameoflife.entity.Civilization;
-import com.gameoflife.life.LifeStateType;
-import com.gameoflife.pojo.Position;
-import com.gameoflife.service.entity.CivilizationService;
+import com.gameoflife.entity.CellGrid;
+import com.gameoflife.life.CellStateType;
+import com.gameoflife.entity.Position;
 
 import java.util.List;
 
@@ -14,26 +13,24 @@ public class Main {
         List<Position> livingPositions = List.of(
                 new Position(1, 1),
                 new Position(1, 2),
-                new Position(1, 3),
-                new Position(2, 2),
-                new Position(2, 3),
-                new Position(2, 4)
+                new Position(2, 1),
+                new Position(2, 2)
         );
 
-        CivilizationService civilizationService = CivilizationService.geInstance();
-        Civilization civilization = civilizationService.createNewCivilization(livingPositions, 5);
-        printCells(civilization);
+        CellGrid currentCellGrid = new CellGrid(livingPositions, 4);
+        printCells(currentCellGrid);
 
-        Civilization nextCivilization = civilizationService.getNextCivilizationState(civilization);
-        printCells(nextCivilization);
+        CellGrid nextGenerationCellGrid = currentCellGrid.getNextGenerationCellGrid();
+        printCells(nextGenerationCellGrid);
+
     }
 
-    private static void printCells(Civilization nextCivilization) {
+    private static void printCells(CellGrid cellGrid) {
         System.out.println("------------------------------------------------");
-        for (int i = 0; i < nextCivilization.getCurrentGeneration().getAllCells().length; i++) {
-            for (int j = 0; j < nextCivilization.getCurrentGeneration().getAllCells()[i].length; j++) {
-                Cell cell = nextCivilization.getCurrentGeneration().getAllCells()[i][j];
-                System.out.print(cell.getLifeState() == LifeStateType.ALIVE ? "1 " : "0 ");
+        for (int i = 0; i < cellGrid.getCellGrid().length; i++) {
+            for (int j = 0; j < cellGrid.getCellGrid()[i].length; j++) {
+                Cell cell = cellGrid.getCellGrid()[i][j];
+                System.out.print(cell.getState() == CellStateType.ALIVE ? "1 " : "0 ");
             }
             System.out.println();
         }

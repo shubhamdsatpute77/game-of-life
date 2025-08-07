@@ -1,12 +1,12 @@
 package com.gameoflife.life;
 
-public enum GenerationStateType {
-    SEED(1),
-    AFTER_SEED(2);
+public enum CellStateType {
+    ALIVE(1),
+    DEAD(2);
 
     private int state;
 
-    GenerationStateType (int state) {
+    CellStateType(int state) {
         this.state = state;
     }
 
