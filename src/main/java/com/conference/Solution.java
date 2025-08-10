@@ -40,26 +40,26 @@ public class Solution {
     }
 
     private static List<List<Conference>> getAllConferenceTracks(List<Conference> conferences) {
-        List<List<Conference>> combinations = new ArrayList<>();
+        List<List<Conference>> allTracks = new ArrayList<>();
         int totalTracks = getTotalTracksCount(conferences);
         for (int track = 0; track < totalTracks; track++) {
-            List<Conference> trackConferences = new ArrayList<>();
+            List<Conference> conferenceTrack = new ArrayList<>();
 
             List<Conference> morning = getConferences(conferences, new ArrayList<>(), AVAILABLE_MINUTES_MORNING_SESSION, 0);
-            trackConferences.addAll(morning);
+            conferenceTrack.addAll(morning);
             morning.forEach(conf -> conf.setBooked(true));
 
-            trackConferences.add(new Conference("Lunch", 60));
+            conferenceTrack.add(new Conference("Lunch", 60));
 
             List<Conference> afternoon = getConferences(conferences, new ArrayList<>(), AVAILABLE_MINUTES_AFTERNOON_SESSION, 0);
-            trackConferences.addAll(afternoon);
+            conferenceTrack.addAll(afternoon);
             afternoon.forEach(conf -> conf.setBooked(true));
 
-            trackConferences.add(new Conference("Networking Event", 0));
+            conferenceTrack.add(new Conference("Networking Event", 0));
 
-            combinations.add(trackConferences);
+            allTracks.add(conferenceTrack);
         }
-        return combinations;
+        return allTracks;
     }
 
     private static int getTotalTracksCount(List<Conference> conferences) {
