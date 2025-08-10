@@ -5,6 +5,12 @@ import java.util.List;
 
 public class Solution {
 
+    public static final double AVAILABLE_MINUTES_IN_DAY = 420.0;
+    public static final int AVAILABLE_MINUTES_MORNING_SESSION = 180;
+    public static final int AVAILABLE_MINUTES_AFTERNOON_SESSION = 240;
+    public static final int START_HOUR_OF_DAY = 9;
+    public static final int MINUTES_IN_HOUR = 60;
+
     public static void main(String[] args) {
         List<Conference> conferences = List.of(
                 new Conference("Writing Fast Tests Against Enterprise Rails", 60),
@@ -28,35 +34,37 @@ public class Solution {
                 new Conference("User Interface CSS in Rails Apps", 30)
         );
 
-        List<List<Conference>> result = findCombinations(conferences);
-        printCombination(result);
+        List<List<Conference>> allTracks = getAllConferenceTracks(conferences);
+        printAllTracks(allTracks);
 
     }
 
-    private static List<List<Conference>> findCombinations(List<Conference> conferences) {
+    private static List<List<Conference>> getAllConferenceTracks(List<Conference> conferences) {
         List<List<Conference>> combinations = new ArrayList<>();
-        int totalTracks = getTotalTracks(conferences);
+        int totalTracks = getTotalTracksCount(conferences);
         for (int track = 0; track < totalTracks; track++) {
             List<Conference> trackConferences = new ArrayList<>();
 
-            List<Conference> morning = getConferences(conferences, new ArrayList<>(), 180, 0);
+            List<Conference> morning = getConferences(conferences, new ArrayList<>(), AVAILABLE_MINUTES_MORNING_SESSION, 0);
             trackConferences.addAll(morning);
             morning.forEach(conf -> conf.setBooked(true));
 
             trackConferences.add(new Conference("Lunch", 60));
 
-            List<Conference> afternoon = getConferences(conferences, new ArrayList<>(), 240, 0);
+            List<Conference> afternoon = getConferences(conferences, new ArrayList<>(), AVAILABLE_MINUTES_AFTERNOON_SESSION, 0);
             trackConferences.addAll(afternoon);
             afternoon.forEach(conf -> conf.setBooked(true));
+
+            trackConferences.add(new Conference("Networking Event", 0));
 
             combinations.add(trackConferences);
         }
         return combinations;
     }
 
-    private static int getTotalTracks(List<Conference> conferences) {
+    private static int getTotalTracksCount(List<Conference> conferences) {
         int totalMinutes = conferences.stream().mapToInt(Conference::getMinutes).sum();
-        return (int) Math.ceil(totalMinutes / 420.0);
+        return (int) Math.ceil(totalMinutes / AVAILABLE_MINUTES_IN_DAY);
     }
 
     private static List<Conference> getConferences(List<Conference> conferences,
@@ -65,8 +73,7 @@ public class Solution {
                                                    int idx) {
         if (targetMinutes == 0) {
             return result;
-        }
-        if (idx >= conferences.size() || targetMinutes < 0) {
+        } else if (idx >= conferences.size() || targetMinutes < 0) {
             return new ArrayList<>();
         }
 
@@ -77,21 +84,30 @@ public class Solution {
         }
         List<Conference> result2 = new ArrayList<>(result);
         result2 = getConferences(conferences, result2, targetMinutes, idx + 1);
+
         return result1.size() > result2.size() ? result1 : result2;
     }
 
-    private static void printCombination(List<List<Conference>> combinations) {
+    private static void printAllTracks(List<List<Conference>> combinations) {
         System.out.println("----------------------------------------------------------------------------------------");
         for (List<Conference> trackList : combinations) {
             System.out.println("############# Track " + (combinations.indexOf(trackList) + 1) + " #############");
-            int trackMinutes = 9*60;
+            int trackMinutes = START_HOUR_OF_DAY * MINUTES_IN_HOUR;
             for (Conference conference : trackList) {
-                System.out.println((trackMinutes / 60) + ":" + (trackMinutes % 60) + " " + conference.getTitle() + " (" + conference.getMinutes() + " minutes)");
+                System.out.println(getTimeString(trackMinutes) + " " + conference.getTitle() + " (" + conference.getMinutes() + " minutes)");
                 trackMinutes += conference.getMinutes();
             }
             System.out.println("----------------------------------------------------------------------------------------");
-            System.out.println("Total time: " + trackList.stream().mapToInt(Conference::getMinutes).sum() + " minutes");
         }
-        System.out.println("----------------------------------------------------------------------------------------");
+    }
+
+    private static String getTimeString(int minutes) {
+        int hour24Format = minutes / MINUTES_IN_HOUR;
+        String hour12FormatString = String.format("%02d", (hour24Format  > 12 ? hour24Format - 12 : hour24Format));
+        int hourMinutes = minutes % MINUTES_IN_HOUR;
+        String hourMinutesString = String.format("%02d", hourMinutes);
+        return hour24Format  > 12
+                ? hour12FormatString + ":" + hourMinutesString + "PM"
+                : hour12FormatString + ":" + hourMinutesString + "AM";
     }
 }
